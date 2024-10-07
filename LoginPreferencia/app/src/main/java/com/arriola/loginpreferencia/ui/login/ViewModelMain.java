@@ -23,8 +23,11 @@ public class ViewModelMain extends AndroidViewModel {
             intent.putExtra("email", mail);
             context.startActivity(intent);
         }
+        else{
+            Toast.makeText(context, "Email/Password incorrectos", Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(context, "Email/Password incorrectos", Toast.LENGTH_SHORT).show();
+
     }
 
     public void Registrar(){
