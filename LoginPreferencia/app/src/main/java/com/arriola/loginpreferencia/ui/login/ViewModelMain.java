@@ -20,20 +20,18 @@ public class ViewModelMain extends AndroidViewModel {
         if(ApiClient.Login(context, mail, password)){
             Intent intent = new Intent(context, RegistroActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("email", mail);
+            intent.putExtra("registro", false);
             context.startActivity(intent);
         }
         else{
             Toast.makeText(context, "Email/Password incorrectos", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     public void Registrar(){
         Intent intent = new Intent(context, RegistroActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.putExtra("registro", true);
         context.startActivity(intent);
     }
 }

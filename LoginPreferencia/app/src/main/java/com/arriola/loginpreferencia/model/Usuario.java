@@ -73,15 +73,4 @@ public class Usuario {
     public void setPassword(String password) {
         Password = password;
     }
-
-    public String getDatos(){
-        List<String> datos = new ArrayList<>();
-        datos.add(this.getDocumento());
-        datos.add(this.getApellido());
-        datos.add(this.getNombre());
-        datos.add(this.getMail());
-        datos.add(this.getPassword());
-
-        return TextUtils.join(";", datos);
-    }
 }
