@@ -1,11 +1,5 @@
 package com.arriola.loginpreferencia.model;
 
-import android.text.TextUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Usuario {
     public String Documento;
     public String Apellido;
@@ -23,15 +17,6 @@ public class Usuario {
         Nombre = nombre;
         Mail = mail;
         Password = password;
-    }
-
-    public Usuario(String datos){
-        List<String> datosRecuperados = Arrays.asList(datos.split(";"));
-        Documento = datosRecuperados.get(0);
-        Apellido = datosRecuperados.get(1);
-        Nombre = datosRecuperados.get(2);
-        Mail = datosRecuperados.get(3);
-        Password = datosRecuperados.get(4);
     }
 
     public String getDocumento() {
