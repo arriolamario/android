@@ -1,6 +1,7 @@
 package com.arriola.fotoperfil.request;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.arriola.fotoperfil.model.Usuario;
@@ -22,8 +23,7 @@ public class ApiClient {
             dos.writeUTF(usuario.getNombre());
             dos.writeUTF(usuario.getMail());
             dos.writeUTF(usuario.getPassword());
-            String base64String = Base64.getEncoder().encodeToString(usuario.getFoto());
-            dos.writeUTF(base64String);
+            dos.writeUTF(usuario.getFoto());
 
         } catch (FileNotFoundException e) {
             Toast.makeText(context, "Error de archivo", Toast.LENGTH_SHORT).show();
@@ -46,8 +46,7 @@ public class ApiClient {
             usuario.setNombre(dis.readUTF());
             usuario.setMail(dis.readUTF());
             usuario.setPassword(dis.readUTF());
-            String base64String = dis.readUTF();
-            usuario.setFoto(Base64.getDecoder().decode(base64String));
+            usuario.setFoto(dis.readUTF());
 
         } catch (FileNotFoundException fnfe) {
             Toast.makeText(context, "Error de Archivo", Toast.LENGTH_SHORT).show();

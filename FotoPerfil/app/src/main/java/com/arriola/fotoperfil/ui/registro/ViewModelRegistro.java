@@ -24,6 +24,7 @@ public class ViewModelRegistro extends AndroidViewModel {
     private Context context;
     private MutableLiveData<Usuario> usuarioMutable;
     private MutableLiveData<Uri> uriMutableLiveData;
+    private Uri fotoPerfilUri;
     public ViewModelRegistro(@NonNull Application application) {
         super(application);
         context = getApplication().getApplicationContext();
@@ -37,12 +38,8 @@ public class ViewModelRegistro extends AndroidViewModel {
         return usuarioMutable;
     }
 
-    public void Guardar(String documento, String apellido, String nombre, String email, String password, Bitmap fotoPerfil){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        fotoPerfil.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        Usuario usuario = new Usuario(documento, apellido, nombre, email, password, byteArray);
+    public void Guardar(String documento, String apellido, String nombre, String email, String password){
+        Usuario usuario = new Usuario(documento, apellido, nombre, email, password, fotoPerfilUri.toString());
 
         ApiClient.Guardar(context.getApplicationContext(), usuario);
 
@@ -70,9 +67,11 @@ public class ViewModelRegistro extends AndroidViewModel {
 
     public void recibirFoto(ActivityResult result) {
         if(result.getResultCode() == RESULT_OK){
+
             Intent data=result.getData();
-            Uri uri=data.getData();
-            uriMutableLiveData.setValue(uri);
+            fotoPerfilUri =data.getData();
+            //getContentResolver().takePersistableUriPermission(fotoPerfilUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uriMutableLiveData.setValue(fotoPerfilUri);
 
 
         }

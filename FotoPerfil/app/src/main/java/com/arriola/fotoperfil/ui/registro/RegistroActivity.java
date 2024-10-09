@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -43,8 +44,15 @@ public class RegistroActivity extends AppCompatActivity {
                 bind.etNombre.setText(usuario.getNombre());
                 bind.etEmailRegistro.setText(usuario.getMail());
                 bind.etPasswordRegistro.setText(usuario.getPassword());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(usuario.getFoto(), 0, usuario.getFoto().length);
-                bind.ivFotoPerfil.setImageBitmap(bitmap);
+                String asd = usuario.getFoto();
+                Uri uriImagen = Uri.parse(asd);
+                try{
+                    bind.ivFotoPerfil.setImageURI(uriImagen);
+                }
+                catch (Exception e){
+                    Toast.makeText(RegistroActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -55,10 +63,7 @@ public class RegistroActivity extends AppCompatActivity {
             String email = bind.etEmailRegistro.getText().toString();
             String password = bind.etPasswordRegistro.getText().toString();
 
-            BitmapDrawable drawable = (BitmapDrawable) bind.ivFotoPerfil.getDrawable();
-            Bitmap foto = drawable.getBitmap();
-
-            vm.Guardar(documento, apellido, nombre, email, password, foto);
+            vm.Guardar(documento, apellido, nombre, email, password);
 
         });
 
@@ -84,7 +89,7 @@ public class RegistroActivity extends AppCompatActivity {
 
 
         intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         arl=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override

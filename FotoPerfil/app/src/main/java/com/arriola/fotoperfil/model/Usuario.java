@@ -8,13 +8,13 @@ public class Usuario implements Serializable {
     public String Nombre;
     public String Mail;
     public String Password;
-    private byte[] Foto;
+    private String Foto;
 
 
     public Usuario() {
     }
 
-    public Usuario(String documento, String apellido, String nombre, String mail, String password, byte[] foto) {
+    public Usuario(String documento, String apellido, String nombre, String mail, String password, String foto) {
         Documento = documento;
         Apellido = apellido;
         Nombre = nombre;
@@ -63,11 +63,11 @@ public class Usuario implements Serializable {
         Password = password;
     }
 
-    public byte[] getFoto() {
+    public String getFoto() {
         return Foto;
     }
 
-    public void setFoto(byte[] foto) {
+    public void setFoto(String foto) {
         Foto = foto;
     }
 }
