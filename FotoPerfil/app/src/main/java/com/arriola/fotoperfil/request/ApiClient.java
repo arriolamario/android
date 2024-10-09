@@ -1,6 +1,9 @@
 package com.arriola.fotoperfil.request;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.arriola.fotoperfil.model.Usuario;
@@ -22,8 +25,7 @@ public class ApiClient {
             dos.writeUTF(usuario.getNombre());
             dos.writeUTF(usuario.getMail());
             dos.writeUTF(usuario.getPassword());
-            String base64String = Base64.getEncoder().encodeToString(usuario.getFoto());
-            dos.writeUTF(base64String);
+            dos.writeUTF(usuario.getFoto());
 
         } catch (FileNotFoundException e) {
             Toast.makeText(context, "Error de archivo", Toast.LENGTH_SHORT).show();
@@ -46,8 +48,7 @@ public class ApiClient {
             usuario.setNombre(dis.readUTF());
             usuario.setMail(dis.readUTF());
             usuario.setPassword(dis.readUTF());
-            String base64String = dis.readUTF();
-            usuario.setFoto(Base64.getDecoder().decode(base64String));
+            usuario.setFoto(dis.readUTF());
 
         } catch (FileNotFoundException fnfe) {
             Toast.makeText(context, "Error de Archivo", Toast.LENGTH_SHORT).show();
@@ -65,5 +66,47 @@ public class ApiClient {
             result = true;
         }
         return result;
+    }
+
+    public static Bitmap redimensionarBitmap(Context context, Uri imageUri) {
+        Bitmap resizedBitmap= null;
+        try(InputStream inputStream = context.getContentResolver().openInputStream(imageUri);) {
+
+            Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
+            resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, 400, 400, true);
+        }
+        catch (IOException ex){
+            Toast.makeText(context, "Error de FileNotFoundExeption", Toast.LENGTH_SHORT).show();
+        }
+
+        return resizedBitmap;
+    }
+
+    public static Uri guardarBitmapYObtenerUri(Context context, Bitmap bitmap)  {
+        // Guardar el Bitmap en almacenamiento externo
+        File directory = new File(context.getFilesDir(), "imagenes");
+        if (!directory.exists()) {
+            directory.mkdirs(); // Crear la carpeta si no existe
+        }
+
+        // Crear el archivo para la imagen
+        File file = new File(directory, "fotoPerfilUsuario.jpg.jpg");
+        try(FileOutputStream outputStream = new FileOutputStream(file)){
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream); // Guardar el bitmap como JPEG
+        }
+        catch (IOException ex){
+            Toast.makeText(context, "Error de IOException", Toast.LENGTH_SHORT).show();
+        }
+
+        // Devolver la Uri del archivo guardado
+        return Uri.fromFile(file);
+    }
+
+    public static Uri redimensionarYGuardarImagen(Context context, Uri imageUri){
+        // Redimensionar la imagen
+        Bitmap resizedBitmap = redimensionarBitmap(context, imageUri);
+
+        // Guardar el Bitmap redimensionado y obtener su Uri
+        return guardarBitmapYObtenerUri(context, resizedBitmap);
     }
 }

@@ -43,8 +43,7 @@ public class RegistroActivity extends AppCompatActivity {
                 bind.etNombre.setText(usuario.getNombre());
                 bind.etEmailRegistro.setText(usuario.getMail());
                 bind.etPasswordRegistro.setText(usuario.getPassword());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(usuario.getFoto(), 0, usuario.getFoto().length);
-                bind.ivFotoPerfil.setImageBitmap(bitmap);
+                bind.ivFotoPerfil.setImageURI(Uri.parse(usuario.getFoto()));
             }
         });
 
@@ -55,10 +54,7 @@ public class RegistroActivity extends AppCompatActivity {
             String email = bind.etEmailRegistro.getText().toString();
             String password = bind.etPasswordRegistro.getText().toString();
 
-            BitmapDrawable drawable = (BitmapDrawable) bind.ivFotoPerfil.getDrawable();
-            Bitmap foto = drawable.getBitmap();
-
-            vm.Guardar(documento, apellido, nombre, email, password, foto);
+            vm.Guardar(documento, apellido, nombre, email, password);
 
         });
 
