@@ -1,9 +1,6 @@
 package com.arriola.fotoperfil.ui.registro;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,8 +16,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.arriola.fotoperfil.databinding.ActivityRegistroBinding;
 import com.arriola.fotoperfil.model.Usuario;
-
-import java.io.ByteArrayOutputStream;
 
 public class RegistroActivity extends AppCompatActivity {
     private ActivityRegistroBinding bind;
@@ -67,7 +62,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         });
 
-        vm.Leer(getIntent());
+
 
         bind.btTomarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +78,14 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
+        vm.Leer(getIntent());
+
     }
 
     private void abrirGaleria(){
 
 
-        intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent=new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         arl=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {

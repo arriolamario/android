@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -52,6 +54,7 @@ public class ViewModelRegistro extends AndroidViewModel {
             Usuario usuario = ApiClient.Leer(context);
 
             if(usuario != null){
+                Log.d("SALIDA-LEER", usuario.getFoto());
                 usuarioMutable.setValue(usuario);
             }
         }
@@ -67,13 +70,13 @@ public class ViewModelRegistro extends AndroidViewModel {
 
     public void recibirFoto(ActivityResult result) {
         if(result.getResultCode() == RESULT_OK){
-
             Intent data=result.getData();
             fotoPerfilUri =data.getData();
-            //getContentResolver().takePersistableUriPermission(fotoPerfilUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                context.getContentResolver().takePersistableUriPermission (fotoPerfilUri, Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
             uriMutableLiveData.setValue(fotoPerfilUri);
-
-
+            Log.d("SALIDA-RECIBIR-FOTO", fotoPerfilUri.toString());
         }
     }
 }
